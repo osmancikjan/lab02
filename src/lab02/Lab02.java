@@ -34,8 +34,9 @@ public class Lab02 {
     private static int solve(List<String> data){
         int index = data.indexOf("(");
         while(index!=-1) {
+
             int end = compute(data,index);
-            int tmp = solve(data.subList(index+1,end-1));
+            int tmp = solve(data.subList(index+1,end));
             
             data.remove(end);
             data.remove(index);
@@ -58,18 +59,18 @@ public class Lab02 {
     } 
     private static int compute(List<String> data, int index) {
         int counter = 0;
-        int tmpi = data.size();
+        int tmpi = 0;
         do {
-            index = data.indexOf("(");
+            tmpi = data.indexOf(")");
             if(data.indexOf("(") != -1) {
                 counter++;
               //  data.subList(index+1, tmpi)
             }
             if(data.indexOf(")") != -1) {
-                tmpi = data.lastIndexOf(")");
                 counter--;
             }    
         } while(counter!=0);
         return tmpi;
+        //(2*(3*4))*(5*6)
     }
 }

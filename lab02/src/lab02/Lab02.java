@@ -35,12 +35,12 @@ public class Lab02 {
         int index = data.indexOf("(");
         while(index!=-1) {
             int end = compute(data,index);
-            int tmp = solve(data.subList(index+1,end-1));
+            int tmp = solve(data.subList(index+1,end));
            
-            data.remove(index);
-            data.remove(end);
-            
-            data.add(index-1, ""+tmp);
+            data.remove(compute(data,index));
+            data.remove(data.indexOf("("));
+                      
+            data.add(index, ""+tmp);
             index = data.indexOf("(");
         }
         index = data.indexOf("*");
