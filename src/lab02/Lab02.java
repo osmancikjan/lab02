@@ -5,6 +5,7 @@
  */
 package lab02;
 
+import com.sun.org.apache.bcel.internal.generic.SWITCH;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -34,15 +35,17 @@ public class Lab02 {
     private static int solve(List<String> data){
         int index = data.indexOf("(");
         while(index!=-1) {
-
             int end = compute(data,index);
             int tmp = solve(data.subList(index+1,end));
+            end = compute(data,index);
+            index = data.indexOf("(");
+            for(int i = end; i >= index; i--) {
+               data.remove(i); 
+            }
             
-            data.remove(end);
-            data.remove(index);
-            
+            //data.remove(compute(data,index));
+            //data.remove(data.indexOf("("));                      
             data.add(index, ""+tmp);
-            
             index = data.indexOf("(");
         }
         index = data.indexOf("*");
@@ -52,25 +55,67 @@ public class Lab02 {
             data.remove(index-1);
             data.remove(index-1);
             data.remove(index-1);
-            data.add(index-1, ""+x*y);
+            data.add(index-1, ""+(x*y));
             index=data.indexOf("*");
+        }
+        index = data.indexOf("/");
+        while(index!=-1) {
+            int x = Integer.parseInt(data.get(index-1));
+            int y = Integer.parseInt(data.get(index+1));
+            data.remove(index-1);
+            data.remove(index-1);
+            data.remove(index-1);
+            data.add(index-1, ""+(x/y));
+            index=data.indexOf("/");
+        }
+        index = data.indexOf("+");
+        while(index!=-1) {
+            int x = Integer.parseInt(data.get(index-1));
+            int y = Integer.parseInt(data.get(index+1));
+            data.remove(index-1);
+            data.remove(index-1);
+            data.remove(index-1);
+            data.add(index-1, ""+(x+y));
+            index=data.indexOf("+");
+        }
+        index = data.indexOf("-");
+        while(index!=-1) {
+            int x = Integer.parseInt(data.get(index-1));
+            int y = Integer.parseInt(data.get(index+1));
+            data.remove(index-1);
+            data.remove(index-1);
+            data.remove(index-1);
+            data.add(index-1, ""+(x-y));
+            index=data.indexOf("-");
         }
         return Integer.parseInt(data.get(0));
     } 
     private static int compute(List<String> data, int index) {
         int counter = 0;
         int tmpi = 0;
-        do {
-            tmpi = data.indexOf(")");
+        for(int i = index; i < data.size(); i++) {
+            if(data.get(i).equals("(")) {
+                counter++;
+            }
+            if (data.get(i).equals(")")) {
+                tmpi = i;
+                counter--;
+            }
+            if(counter==0) {
+                break;
+            }
+        }
+        /*do {
+            index = data.indexOf("(");
             if(data.indexOf("(") != -1) {
                 counter++;
               //  data.subList(index+1, tmpi)
             }
             if(data.indexOf(")") != -1) {
+                tmpi = data.lastIndexOf(")");
                 counter--;
             }    
-        } while(counter!=0);
+        } while(counter!=0);*/
         return tmpi;
-        //(2*(3*4))*(5*6)
     }
 }
