@@ -34,10 +34,13 @@ public class Lab02 {
     private static int solve(List<String> data){
         int index = data.indexOf("(");
         while(index!=-1) {
-            int end =compute(data,index);
+            int end = compute(data,index);
             int tmp = solve(data.subList(index+1,end-1));
-            //remove index - end
-            //add index tmp
+            
+            data.remove(index);
+            data.remove(end);
+            
+            data.add(index-1, ""+tmp);
             index = data.indexOf("(");
         }
         index = data.indexOf("*");
@@ -52,5 +55,20 @@ public class Lab02 {
         }
         return Integer.parseInt(data.get(0));
     } 
-    private static void compute(ArrayList<String> data, int index) {}
+    private static int compute(List<String> data, int index) {
+        int counter = 0;
+        int tmpi = 0;
+        do {
+            index = data.indexOf("(");
+            if(data.indexOf("(") != -1) {
+                counter++;
+              //  data.subList(index+1, tmpi)
+            }
+            if(data.indexOf(")") != -1) {
+                tmpi = data.indexOf(")");
+                counter--;
+            }    
+        } while(counter!=0);
+        return tmpi;
+    }
 }
